@@ -1,0 +1,12 @@
+{
+    "name": "brunch-surplus",
+    "version": "1.0.0",
+    "private": false,
+    "dependencies": {
+        "surplus": "^0.5.3"
+    },
+    "devDependencies": {
+        "chai": "^3",
+        "mocha": "^3"
+    }
+}
