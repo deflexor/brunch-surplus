@@ -1,16 +1,23 @@
-'use strict';
-import { compiler } from 'surplus/compiler';
+const compiler = require('surplus/compiler');
 
 class BrunchSurplusPlugin {
   constructor(config) {
-    this.config = config.plugins.plugin || {};
+    this.sourceMaps = config.sourceMaps;
   }
 
   compile(file) {
+    const options = {};
+    if (this.sourceMaps === 'inline') {
+      options.sourcemap = 'append';
+    } else if (this.sourceMaps) {
+      options.sourcemap = 'extract';
+    }
     return new Promise((resolve, reject) => {
       try {
-        let { out, map } = compiler.compile(file.data, { sourcemap: 'extract' });
-        resolve({ data: out, map: JSON.stringify(map) });
+        const compiled = compiler.compile(file.data, options);
+        const result = typeof compiled === 'string' ?
+                       {data: compiled} : {data: compiled.src, map: compiled.map};
+        resolve(result);
       } catch (error) {
         reject(error);
         return;
